@@ -3,10 +3,18 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { galleryImages } from "@/lib/data/gallery";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+type GalleryImageType = {
+  id: string;
+  src: string;
+  alt: string;
+  category: string;
+};
 
 export function GalleryGrid() {
   const [filter, setFilter] = useState<string | null>(null);
+  const [uploadedImages, setUploadedImages] = useState<GalleryImageType[]>([]);
   const categories = [
     { key: null, label: "All" },
     { key: "rooms", label: "Rooms" },
@@ -16,10 +24,19 @@ export function GalleryGrid() {
     { key: "events", label: "Events" },
     { key: "nature", label: "Nature" },
   ];
+
+  useEffect(() => {
+    fetch("/api/admin/images")
+      .then((res) => res.ok && res.json())
+      .then((data) => Array.isArray(data) && setUploadedImages(data))
+      .catch(() => {});
+  }, []);
+
+  const allImages: GalleryImageType[] = [...galleryImages, ...uploadedImages];
   const filtered =
     filter === null
-      ? galleryImages
-      : galleryImages.filter((img) => img.category === filter);
+      ? allImages
+      : allImages.filter((img) => img.category === filter);
 
   return (
     <section id="gallery" className="py-24 lg:py-32 bg-charcoal">

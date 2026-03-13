@@ -98,9 +98,14 @@ export function Footer() {
           <p className="text-cream/50 text-xs">
             © {new Date().getFullYear()} BAZAGOD. All rights reserved.
           </p>
-          <p className="text-cream/40 text-xs">
-            Burundi · Lac Tanganyika
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-cream/40 text-xs">
+              Burundi · Lac Tanganyika
+            </p>
+            <Link href="/admin" className="text-cream/30 hover:text-cream/50 text-xs transition-colors">
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
