@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowLeft, Users, Maximize2, Bed } from "lucide-react";
 import type { Room } from "@/lib/data/rooms";
 
@@ -14,11 +13,7 @@ export function RoomDetails({ room }: RoomDetailsProps) {
   return (
     <div className="pt-24 pb-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8 animate-fade-in-up">
           <Link
             href="/#rooms"
             className="inline-flex items-center gap-2 text-cream hover:text-luxury-gold transition-colors text-sm"
@@ -26,15 +21,10 @@ export function RoomDetails({ room }: RoomDetailsProps) {
             <ArrowLeft className="w-4 h-4" />
             Back to rooms
           </Link>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="space-y-4"
-          >
+          <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
               <Image
                 src={room.image}
@@ -43,7 +33,6 @@ export function RoomDetails({ room }: RoomDetailsProps) {
                 className="object-cover"
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                unoptimized
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -55,19 +44,14 @@ export function RoomDetails({ room }: RoomDetailsProps) {
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 25vw"
-                    unoptimized
+                    loading="lazy"
                   />
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
+          <div className="space-y-6 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             <p className="text-luxury-gold uppercase tracking-widest text-sm">
               {room.view}
             </p>
@@ -118,7 +102,7 @@ export function RoomDetails({ room }: RoomDetailsProps) {
             >
               Reserve now
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

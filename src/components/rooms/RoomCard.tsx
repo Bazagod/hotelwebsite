@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { FadeIn } from "@/components/ui/fade-in";
 import type { Room } from "@/lib/data/rooms";
 
 interface RoomCardProps {
@@ -14,12 +14,7 @@ interface RoomCardProps {
 
 export function RoomCard({ room, index = 0 }: RoomCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
+    <FadeIn delay={index * 0.1}>
       <Card className="group overflow-hidden border-white/10 bg-charcoal/60 hover:bg-charcoal/80 transition-all duration-500 hover:border-luxury-gold/30">
         <Link href={`/rooms/${room.slug}`} className="block">
           <div className="relative aspect-[4/3] overflow-hidden">
@@ -29,7 +24,7 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              unoptimized
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
@@ -56,6 +51,6 @@ export function RoomCard({ room, index = 0 }: RoomCardProps) {
           </CardContent>
         </Link>
       </Card>
-    </motion.div>
+    </FadeIn>
   );
 }

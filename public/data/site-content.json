@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "subtitle": "Bujumbura · Lac Tanganyika",
+    "titleLine1": "Where luxury meets",
+    "titleLine2": "the heart of Africa",
+    "description": "An exclusive retreat on the shores of Lake Tanganyika. Discover refined comfort in Burundi's most distinguished address.",
+    "backgroundImage": ""
+  },
+  "hotel": {
+    "name": "BAZAGOD",
+    "tagline": "Luxury Hotel on Lake Tanganyika",
+    "address": "Avenue du Lac Tanganyika, Bujumbura, Burundi",
+    "phone": "+257 22 25 12 34",
+    "email": "reservations@bazagod.bi",
+    "description": "Luxury on the shores of Lake Tanganyika. Bujumbura, Burundi."
+  },
+  "sections": {
+    "rooms": {
+      "subtitle": "Rooms",
+      "title": "Our Rooms & Suites"
+    },
+    "amenities": {
+      "subtitle": "Experiences",
+      "title": "Hotel amenities",
+      "description": "From our infinity pool overlooking Lake Tanganyika to the spa and private beach—every detail is designed for your comfort."
+    },
+    "gallery": {
+      "subtitle": "Gallery",
+      "title": "A glimpse of BAZAGOD"
+    },
+    "testimonials": {
+      "subtitle": "Testimonials",
+      "title": "What our guests say"
+    },
+    "booking": {
+      "subtitle": "Reservations",
+      "title": "Reserve your stay",
+      "description": "Request a reservation and our team will confirm within 24 hours."
+    },
+    "contact": {
+      "subtitle": "Contact",
+      "title": "Get in touch"
+    },
+    "location": {
+      "subtitle": "Location",
+      "title": "Find us in Bujumbura",
+      "description": "Avenue du Lac Tanganyika, on the shores of Lake Tanganyika. Minutes from Bujumbura International Airport and the city center."
+    }
+  }
+}

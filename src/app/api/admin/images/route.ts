@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { readFile, writeFile, mkdir } from "fs/promises";
+import { readFile, writeFile, mkdir, unlink } from "fs/promises";
 import path from "path";
 
 const DATA_PATH = path.join(process.cwd(), "public", "data", "uploaded-gallery.json");
+const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 export type UploadedImage = {
   id: string;
@@ -27,10 +28,19 @@ async function saveUploadedImages(images: UploadedImage[]) {
   await writeFile(DATA_PATH, JSON.stringify(images, null, 2), "utf-8");
 }
 
-function isAdmin(c: ReturnType<typeof cookies>): boolean {
-  const token = c.get("admin_token")?.value;
-  const secret = process.env.ADMIN_SECRET || "bazagod-admin-2024";
-  return token === secret;
+async function verifyAuth(request: NextRequest): Promise<boolean> {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    try {
+      const res = await fetch(`${API_URL}/me`, {
+        headers: { Authorization: authHeader, Accept: "application/json" },
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+  return false;
 }
 
 export async function GET() {
@@ -39,19 +49,29 @@ export async function GET() {
 }
 
 export async function DELETE(request: NextRequest) {
-  const c = cookies();
-  if (!isAdmin(c)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  if (!(await verifyAuth(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const id = request.nextUrl.searchParams.get("id");
   if (!id) {
-    return NextResponse.json({ error: "id manquant" }, { status: 400 });
+    return NextResponse.json({ error: "id required" }, { status: 400 });
   }
+
   const images = await getUploadedImages();
-  const filtered = images.filter((img) => img.id !== id);
-  if (filtered.length === images.length) {
-    return NextResponse.json({ error: "Image introuvable" }, { status: 404 });
+  const image = images.find((img) => img.id === id);
+  if (!image) {
+    return NextResponse.json({ error: "Image not found" }, { status: 404 });
   }
+
+  try {
+    const filePath = path.join(UPLOADS_DIR, path.basename(image.src));
+    await unlink(filePath).catch(() => {});
+  } catch {
+    // file may already be deleted
+  }
+
+  const filtered = images.filter((img) => img.id !== id);
   await saveUploadedImages(filtered);
   return NextResponse.json({ ok: true });
 }

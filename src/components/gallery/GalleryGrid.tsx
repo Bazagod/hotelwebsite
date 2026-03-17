@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { galleryImages } from "@/lib/data/gallery";
 import { useState, useEffect } from "react";
+import { FadeIn } from "@/components/ui/fade-in";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 type GalleryImageType = {
   id: string;
@@ -15,6 +16,9 @@ type GalleryImageType = {
 export function GalleryGrid() {
   const [filter, setFilter] = useState<string | null>(null);
   const [uploadedImages, setUploadedImages] = useState<GalleryImageType[]>([]);
+  const { content } = useSiteContent();
+  const sec = content?.sections?.gallery;
+
   const categories = [
     { key: null, label: "All" },
     { key: "rooms", label: "Rooms" },
@@ -41,26 +45,16 @@ export function GalleryGrid() {
   return (
     <section id="gallery" className="py-24 lg:py-32 bg-charcoal">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-12"
-        >
+        <FadeIn className="text-center max-w-3xl mx-auto mb-12">
           <p className="text-luxury-gold uppercase tracking-[0.3em] text-sm font-medium mb-4">
-            Gallery
+            {sec?.subtitle ?? "Gallery"}
           </p>
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-cream font-light">
-            A glimpse of BAZAGOD
+            {sec?.title ?? "A glimpse of BAZAGOD"}
           </h2>
-        </motion.div>
+        </FadeIn>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
+        <FadeIn className="flex flex-wrap justify-center gap-2 mb-12">
           {categories.map((cat) => (
             <button
               key={cat.key ?? "all"}
@@ -77,20 +71,13 @@ export function GalleryGrid() {
               {cat.label}
             </button>
           ))}
-        </motion.div>
+        </FadeIn>
 
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          {filtered.map((img, index) => (
-            <motion.div
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((img) => (
+            <div
               key={img.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.05 }}
-              className="relative aspect-[4/3] rounded-lg overflow-hidden group"
+              className="relative aspect-[4/3] rounded-lg overflow-hidden group transition-all duration-300"
             >
               <Image
                 src={img.src}
@@ -98,15 +85,15 @@ export function GalleryGrid() {
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <p className="absolute bottom-4 left-4 right-4 text-cream text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                 {img.alt}
               </p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

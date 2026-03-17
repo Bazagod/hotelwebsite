@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const footerLinks = {
   stay: [
@@ -17,16 +18,19 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const { content } = useSiteContent();
+  const hotel = content?.hotel;
+
   return (
     <footer className="bg-charcoal border-t border-white/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
           <div className="lg:col-span-1">
             <Link href="/" className="font-serif text-3xl font-semibold text-cream">
-              BAZAGOD
+              {hotel?.name ?? "BAZAGOD"}
             </Link>
             <p className="mt-4 text-cream/70 text-sm leading-relaxed max-w-xs">
-              Luxury on the shores of Lake Tanganyika. Bujumbura, Burundi.
+              {hotel?.description ?? "Luxury on the shores of Lake Tanganyika. Bujumbura, Burundi."}
             </p>
           </div>
 
@@ -73,21 +77,18 @@ export function Footer() {
             <ul className="space-y-4 text-cream/80 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-luxury-gold mt-0.5 shrink-0" />
-                <span>
-                  Avenue du Lac Tanganyika<br />
-                  Bujumbura, Burundi
-                </span>
+                <span>{hotel?.address ?? "Avenue du Lac Tanganyika, Bujumbura, Burundi"}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-luxury-gold shrink-0" />
-                <a href="tel:+25722251234" className="hover:text-luxury-gold transition-colors">
-                  +257 22 25 12 34
+                <a href={`tel:${(hotel?.phone ?? "+257 22 25 12 34").replace(/\s/g, "")}`} className="hover:text-luxury-gold transition-colors">
+                  {hotel?.phone ?? "+257 22 25 12 34"}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-luxury-gold shrink-0" />
-                <a href="mailto:reservations@bazagod.bi" className="hover:text-luxury-gold transition-colors">
-                  reservations@bazagod.bi
+                <a href={`mailto:${hotel?.email ?? "reservations@bazagod.bi"}`} className="hover:text-luxury-gold transition-colors">
+                  {hotel?.email ?? "reservations@bazagod.bi"}
                 </a>
               </li>
             </ul>
@@ -96,7 +97,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-cream/50 text-xs">
-            © {new Date().getFullYear()} BAZAGOD. All rights reserved.
+            &copy; {new Date().getFullYear()} {hotel?.name ?? "BAZAGOD"}. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <p className="text-cream/40 text-xs">

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { FadeIn } from "@/components/ui/fade-in";
 
 export function ContactForm() {
   const [name, setName] = useState("");
@@ -20,32 +20,24 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-12"
-      >
+      <div className="text-center py-12 animate-fade-in">
         <p className="font-serif text-2xl text-luxury-gold mb-2">
           Message sent
         </p>
         <p className="text-cream/80">
           We will get back to you within 24 hours.
         </p>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
+    <FadeIn>
       <Card className="glass-dark border-white/20 overflow-hidden">
         <CardHeader className="border-b border-white/10">
           <h3 className="font-serif text-xl text-cream">Get in touch</h3>
           <p className="text-cream/70 text-sm">
-            Reservations, events, or general enquiries—we&apos;re here to help.
+            Reservations, events, or general enquiries&mdash;we&apos;re here to help.
           </p>
         </CardHeader>
         <CardContent className="pt-6">
@@ -106,6 +98,6 @@ export function ContactForm() {
           </form>
         </CardContent>
       </Card>
-    </motion.div>
+    </FadeIn>
   );
 }

@@ -27,6 +27,13 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# Laravel backend
+/backend/vendor
+/backend/.env
+/backend/storage/*.key
+/backend/database/database.sqlite
 
 # vercel
 .vercel
